@@ -16,14 +16,14 @@
 
 				<div class="header__item">
 					<img class="header__icon" src="images/location.svg" alt="header icon">
-					<div class="header__info">{{$contact['address_'.\App::getLocale()]}}</div>
+					<div class="header__info">{{!empty($contact)?$contact['address_'.\App::getLocale()]:''}}</div>
 				</div>
 
 				<div class="header__item">
 					<img class="header__icon" src="images/phone.svg" alt="header icon">
 					<div class="header__info">
-						<a class="header__phone" href="tel:+998712766253">{{$contact->phone1}}</a>
-						<a class="header__phone" href="tel:+998712766254">{{$contact->phone2}}</a>
+						<a class="header__phone" href="tel:+998712766253">{{!empty($contact)?$contact->phone1:''}}</a>
+						<a class="header__phone" href="tel:+998712766254">{{!empty($contact)?$contact->phone2:''}}</a>
 					</div>
 				</div>
 
@@ -44,14 +44,14 @@
 					
 				<div class="header__item header__location">
 					<img class="header__icon" src="images/location.svg" alt="header icon">
-					<div class="header__info">{{$contact['address_'.\App::getLocale()]}}</div>
+					<div class="header__info">{{!empty($contact)?$contact['address_'.\App::getLocale()]:''}}</div>
 				</div>
 
 				<div class="header__item header__phones">
 					<img class="header__icon" src="images/phone.svg" alt="header icon">
 					<div class="header__info">
-						<a class="header__phone" href="tel:+998712766253">{{$contact->phone1}}</a>
-						<a class="header__phone" href="tel:+998712766254">{{$contact->phone2}}</a>
+						<a class="header__phone" href="tel:+998712766253">{{!empty($contact)?$contact->phone1:''}}</a>
+						<a class="header__phone" href="tel:+998712766254">{{!empty($contact)?$contact->phone2:''}}</a>
 					</div>
 				</div>
 
@@ -59,7 +59,7 @@
 
 
 				<img class="header__icon header__search" src="images/search.svg" alt="header icon">
-				<a href="{{$contact->facebook}}">
+				<a href="{{!empty($contact)?$contact->facebook:''}}">
 					<div class="header__icon header__icon_block header__facebook">
 						<img src="images/facebook.svg" alt="header icon">
 						<span>{{__('words.facebook')}}</span>
@@ -123,16 +123,20 @@
 					<a class="header__link" href="#">{{__('words.feedbake')}}</a>
 				</nav>
 				<div class="header__slider">
-					@foreach ($slides as $slide)
-					<div class="header__slide">
-						<div class="header__content">
-							<h1 class="header__title">{{ $slide['title_'.\App::getLocale()]}}</h1>
-							<p class="header__text">{{ $slide['description_'.\App::getLocale()]}}</p>
-							<button class="btn">{{__('words.more')}}</button>
+					@if (!empty($slides))					
+						@foreach ($slides as $slide)
+						<div class="header__slide">
+							<div class="header__content">
+								<h1 class="header__title">{{ $slide['title_'.\App::getLocale()]}}</h1>
+								<p class="header__text">{{ $slide['description_'.\App::getLocale()]}}</p>
+								<button class="btn">{{__('words.more')}}</button>
+							</div>
+							<img class="header__img" src="{{Voyager::image($slide->image)}}" alt="header img">
 						</div>
-						<img class="header__img" src="{{Voyager::image($slide->image)}}" alt="header img">
-					</div>
-					@endforeach
+						@endforeach
+					@else
+						<h1>Not Slides</h1>
+					@endif
 				</div>
 
 				<div class="header-dots">
@@ -149,6 +153,9 @@
 			 <section class="products">
 				<h1 class="title" data-aos-offset="200" data-aos="flip-up">{{__('words.products')}}</h1>
 				<main class="products__inner">
+					@if (!empty($products))
+						
+
 					@foreach ($products as $product)
 						<div class="products__item" data-aos-offset="100" data-aos="zoom-out">
 							<img class="products__img" src="{{Voyager::image($product->image)}}" alt="products img">
@@ -156,6 +163,10 @@
 							<button class="btn">{{__('words.view')}}</button>
 						</div>
 					@endforeach
+
+					@else
+						<h1>Not Products</h1>
+					@endif
 				</main>
 
 				<a class="link" href="#">{{__('words.go_catalog')}}</a>
@@ -167,6 +178,8 @@
 				<h1 class="title" data-aos-offset="200" data-aos="flip-up">{{__('words.service')}}</h1>
 
 				<div class="service__inner">
+					@if (!empty($services))
+						
 
 					@foreach ($services as $service)
 					<div class="service__card" data-aos-duration="1000" data-aos-offset="100" data-aos="fade-left">
@@ -180,6 +193,9 @@
 							</div>
 						</div>
 					@endforeach
+					@else
+						<h1>Not Services</h1>
+					@endif
 				</div>
 			</section> 
 			
@@ -193,15 +209,15 @@
 						<div class="company__circle company__circle_1">
 							<div class="company__circle company__circle_2">
 								<div class="company__circle company__circle_3">
-									<img class="company__logo" src="{{Voyager::image($about->image)}}" alt="logo">
+									<img class="company__logo" src="{{!empty($about)?Voyager::image($about->image):''}}" alt="logo">
 								</div>
 							</div>
 						</div>
 					</div>
 	
 					<div class="company__content" data-aos-offset="100" data-aos-duration="1000" data-aos="fade-right">
-						<img class="company__content-logo" src="{{Voyager::image($about->image)}}" alt="logo">
-						<p class="company__text text">{{$about['description_'.\App::getLocale()]}}</p>
+						<img class="company__content-logo" src="{{!empty($about)?Voyager::image($about->image):''}}" alt="logo">
+						<p class="company__text text">{{!empty($about)?$about['description_'.\App::getLocale()]:''}}</p>
 	
 						<button class="btn">{{__('words.learn_more')}}</button>
 					</div>
@@ -215,6 +231,8 @@
 			 <section class="news">
 				<h1 class="title" data-aos-offset="200" data-aos="flip-up">{{__('words.new')}}</h1>
 				<main class="news__slider">
+					@if (!empty($news))
+
 					@foreach ($news as $new)
 						
 					<div class="news__item" data-aos-offset="100" data-aos="flip-left">
@@ -225,6 +243,10 @@
 						<button class="news__btn btn">{{__('words.more')}}</button>
 					</div>
 					@endforeach
+											
+					@else
+						<h1>Not News</h1>
+					@endif
 			
 				</main>
 
@@ -240,6 +262,9 @@
 				<h1 class="title" data-aos-offset="200" data-aos="flip-up">{{__('words.partner')}}</h1>
 
 				<div class="partner__slider">
+					@if (!empty($partners))
+						
+			
 					<div class="partner__item">
 						@foreach ($partners as $partner)
 						<a class="partner__link" data-aos-offset="100" data-aos="flip-up" href="{{$partner->url}}"><img src="{{Voyager::image($partner->image)}}" alt="partner img"></a>
@@ -255,7 +280,9 @@
 						<a class="partner__link" data-aos-offset="100" data-aos="flip-up" href="{{$partner->url}}"><img src="{{Voyager::image($partner->image)}}" alt="partner img"></a>
 						@endforeach
 					</div>
-
+					@else
+						<h1>Not Partners</h1>
+					@endif
 				</div>
 				 
 			</section> 
@@ -272,19 +299,19 @@
 							<div class="footer-contact__box">
 								<div class="footer-contact__item">
 									<img class="footer__icon" src="images/location.svg" alt="footer icon">
-									<div class="footer__infos">{{$contact['address_'.\App::getLocale()]}}</div>
+									<div class="footer__infos">{{!empty($contact)?$contact['address_'.\App::getLocale()]:''}}</div>
 								</div>
 								<div class="footer-contact__item">
 									<img class="footer__icon" src="images/message.svg" alt="footer icon">
-									<a class="footer__infos" href="mailto:info@medol.uz">{{$contact->email}}</a>
+									<a class="footer__infos" href="mailto:info@medol.uz">{{!empty($contact)?$contact->email:''}}</a>
 								</div>
 							</div>
 							<div class="footer-contact__box">
 								<div class="footer-contact__phone">
 									<img class="footer__icon" src="images/phone.svg" alt="header icon">
 									<div class="footer__infos">
-										<a class="footer__phone" href="tel:+998712766253">{{$contact->phone1}}</a>
-										<a class="footer__phone" href="tel:+998712766254">{{$contact->phone2}}</a>
+										<a class="footer__phone" href="tel:+998712766253">{{!empty($contact)?$contact->phone1:'';}}</a>
+										<a class="footer__phone" href="tel:+998712766254">{{!empty($contact)?$contact->phone2:''}}</a>
 									</div>
 								</div>
 								<button class="btn">Оставить заявку</button>
@@ -308,20 +335,33 @@
 						<div class="footer__item">
 							<h3 class="footer__title">{{__('words.products')}}</h3>
 							<ul class="footer__list">
+								@if (!empty($products))
+									
+								
 								@foreach ($products as $product)
 									
 								<li><a class="footer__link" href="#" style="text-transform: lowercase ">{{$product['title_'.\App::getLocale()]}}</a></li>
 								@endforeach
+								@else
+									<li><a class="footer__link" href="#" style="text-transform: lowercase ">Not Products</a></li>
+								@endif
 					
 							</ul>
 						</div>
 						<div class="footer__item">
 							<h3 class="footer__title">{{__('words.service')}}</h3>
 							<ul class="footer__list">
+								@if (!empty($services))
+									
+							
 								@foreach ($services as $service)
 									
 								<li><a class="footer__link" href="#" style="text-transform: lowercase " >{{ $service['title_'.\App::getLocale()]}}</a></li>
 								@endforeach
+								@else
+								<li><a class="footer__link" href="#" style="text-transform: lowercase ">Not Services</a></li>
+
+								@endif
 							</ul>
 						</div>
 					</div>
